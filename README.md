@@ -11,10 +11,10 @@ catalogue feeds through independent connectors.
 
 ## Current status
 
-Suitly is in the architecture and MVP-planning stage. The repository currently
-contains the accepted system design, durable engineering instructions, and the
-initial platform-neutral folder structure. Application code has not yet been
-implemented.
+Suitly is in the catalogue-ingestion stage of the MVP. The repository contains
+the accepted system design, durable engineering instructions, the
+platform-neutral folder structure, canonical catalogue schemas, and a tested
+Shopify CSV normalizer.
 
 ## MVP objective
 
@@ -111,9 +111,29 @@ described in the architecture document.
 
 ## Development
 
-Implementation has not started. The first development milestone is inspection
-of the real catalogue source, followed by a documented mapping and data-quality
-report. Parsers must not be finalized before the source data is inspected.
+Requirements:
+
+- Node.js 20 or newer
+- Corepack
+
+Install dependencies and run the verification suite:
+
+```bash
+corepack pnpm install
+corepack pnpm format:check
+corepack pnpm typecheck
+corepack pnpm lint
+corepack pnpm test
+```
+
+Normalize the synthetic Shopify CSV fixture:
+
+```bash
+corepack pnpm normalize:sample
+```
+
+Generated products and the ingestion report are written to `data/generated/`
+and are intentionally ignored by Git.
 
 ## Privacy
 

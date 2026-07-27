@@ -1,0 +1,30 @@
+{
+  "name": "suitly",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Platform-neutral AI fashion recommendations for e-commerce.",
+  "license": "UNLICENSED",
+  "packageManager": "pnpm@9.15.5",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . --ext .ts --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "normalize:sample": "tsx packages/catalogue/src/cli.ts --input tests/fixtures/store-products-sample.csv --products data/generated/products.normalized.json --report data/generated/ingestion-report.json --currency USD"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.5",
+    "@typescript-eslint/eslint-plugin": "8.19.1",
+    "@typescript-eslint/parser": "8.19.1",
+    "eslint": "8.57.1",
+    "eslint-config-prettier": "9.1.0",
+    "prettier": "3.4.2",
+    "tsx": "4.19.2",
+    "typescript": "5.7.2",
+    "vitest": "2.1.8"
+  }
+}

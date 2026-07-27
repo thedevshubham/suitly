@@ -51,6 +51,8 @@ data/imports/*
 !data/imports/.gitkeep
 data/evaluations/*
 !data/evaluations/.gitkeep
+data/generated/*
+!data/generated/.gitkeep
 
 # Uploaded shopper images
 uploads/

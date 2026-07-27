@@ -1,0 +1,8 @@
+node_modules/
+coverage/
+dist/
+.next/
+data/generated/
+tests/fixtures/*.csv
+suitly.md
+docs/system-architecture.md
