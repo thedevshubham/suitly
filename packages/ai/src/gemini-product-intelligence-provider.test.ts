@@ -70,6 +70,10 @@ describe('GeminiProductIntelligenceProvider', () => {
     expect(generateContent.mock.calls[0]?.[0] as unknown).toMatchObject({
       model: 'gemini-test',
       config: {
+        httpOptions: {
+          timeout: 60_000,
+          retryOptions: { attempts: 2 },
+        },
         responseMimeType: 'application/json',
         responseJsonSchema: { type: 'object' },
       },

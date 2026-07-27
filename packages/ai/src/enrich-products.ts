@@ -33,44 +33,77 @@ export async function enrichProducts(
     ) {
       enriched.push({ ...cached, product });
       cachedProducts += 1;
-      continue;
+    } else {
+      try {
+        const intelligence = productIntelligenceSchema.parse(
+          await provider.enrichProduct({ product }),
+        );
+        enriched.push({
+          product,
+          intelligence,
+          contentHash,
+          model: provider.model,
+          promptVersion: provider.promptVersion,
+          analysedAt: (options.now ?? (() => new Date()))().toISOString(),
+        });
+        analysedProducts += 1;
+      } catch (error) {
+        failures.push({
+          productId: product.id,
+          handle: product.handle,
+          message: error instanceof Error ? error.message : 'Unknown error',
+        });
+      }
     }
 
-    try {
-      const intelligence = productIntelligenceSchema.parse(
-        await provider.enrichProduct({ product }),
+    if (options.onProductProcessed !== undefined) {
+      await options.onProductProcessed(
+        buildResult(
+          products.length,
+          enriched,
+          failures,
+          analysedProducts,
+          cachedProducts,
+          threshold,
+          provider,
+        ),
       );
-      enriched.push({
-        product,
-        intelligence,
-        contentHash,
-        model: provider.model,
-        promptVersion: provider.promptVersion,
-        analysedAt: (options.now ?? (() => new Date()))().toISOString(),
-      });
-      analysedProducts += 1;
-    } catch (error) {
-      failures.push({
-        productId: product.id,
-        handle: product.handle,
-        message: error instanceof Error ? error.message : 'Unknown error',
-      });
     }
   }
 
+  return buildResult(
+    products.length,
+    enriched,
+    failures,
+    analysedProducts,
+    cachedProducts,
+    threshold,
+    provider,
+  );
+}
+
+function buildResult(
+  totalProducts: number,
+  products: EnrichedProduct[],
+  failures: ProductEnrichmentResult['report']['failures'],
+  analysedProducts: number,
+  cachedProducts: number,
+  threshold: number,
+  provider: ProductIntelligenceProvider,
+): ProductEnrichmentResult {
   return {
-    products: enriched,
+    products: [...products],
     report: {
-      totalProducts: products.length,
+      totalProducts,
       analysedProducts,
       cachedProducts,
       failedProducts: failures.length,
-      lowConfidenceProducts: enriched.filter(
+      lowConfidenceProducts: products.filter(
         (entry) => entry.intelligence.confidence < threshold,
       ).length,
       model: provider.model,
       promptVersion: provider.promptVersion,
-      failures,
+      failures: [...failures],
     },
   };
 }

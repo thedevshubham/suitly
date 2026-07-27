@@ -172,4 +172,20 @@ describe('enrichProducts', () => {
 
     expect(result.report.lowConfidenceProducts).toBe(1);
   });
+
+  it('checkpoints after every processed product', async () => {
+    const checkpoints: number[] = [];
+    const provider = new MockProvider();
+    await enrichProducts(
+      [product, { ...product, id: 'prd_second' }],
+      provider,
+      {
+        onProductProcessed: (result) => {
+          checkpoints.push(result.products.length);
+        },
+      },
+    );
+
+    expect(checkpoints).toEqual([1, 2]);
+  });
 });

@@ -94,6 +94,7 @@ connectors/
 ## Documentation
 
 - [System architecture](docs/system-architecture.md)
+- [Product-intelligence evaluation](docs/product-intelligence-evaluation.md)
 - [Original product specification](suitly.md)
 - [Engineering agent instructions](AGENTS.md)
 
@@ -146,6 +147,17 @@ corepack pnpm enrich:sample:one
 
 The command is explicitly limited to one product. It writes cached enriched
 products and a failure/low-confidence report under `data/generated/`.
+
+After verifying one product, enrich the complete sample catalogue with
+free-tier-friendly request pacing:
+
+```bash
+corepack pnpm enrich:sample
+```
+
+The batch checkpoints after every product, so an interrupted run can resume
+from its cached results. The CLI also accepts `--offset` and `--limit` for a
+targeted retry while preserving the rest of the cache.
 
 ## Privacy
 

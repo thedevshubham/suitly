@@ -2,6 +2,7 @@ import { existsSync } from 'node:fs';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { loadEnvFile } from 'node:process';
+import { setTimeout } from 'node:timers/promises';
 
 import {
   canonicalProductSchema,
@@ -18,6 +19,8 @@ const inputPath = requiredArgument(argumentsMap, 'input');
 const productsPath = requiredArgument(argumentsMap, 'products');
 const reportPath = requiredArgument(argumentsMap, 'report');
 const limit = parseLimit(requiredArgument(argumentsMap, 'limit'));
+const offset = parseNonNegativeInteger(argumentsMap.get('offset') ?? '0');
+const delayMs = parseNonNegativeInteger(argumentsMap.get('delay-ms') ?? '0');
 
 if (existsSync('.env.local')) {
   loadEnvFile('.env.local');
@@ -26,13 +29,41 @@ if (existsSync('.env.local')) {
 const inputProducts = canonicalProductSchema
   .array()
   .parse(await readJson(inputPath))
-  .slice(0, limit);
+  .slice(offset, offset + limit);
 const existing = await readExisting(productsPath);
 const provider = createProductIntelligenceProvider(process.env);
-const result = await enrichProducts(inputProducts, provider, { existing });
+let processedProducts = 0;
+let providerAttempts = 0;
+const result = await enrichProducts(inputProducts, provider, {
+  existing,
+  onProductProcessed: async (checkpoint) => {
+    processedProducts += 1;
+    const currentProviderAttempts =
+      checkpoint.report.analysedProducts + checkpoint.report.failedProducts;
+    const attemptedProviderCall = currentProviderAttempts > providerAttempts;
+    providerAttempts = currentProviderAttempts;
+    await Promise.all([
+      writeJson(productsPath, mergeProducts(existing, checkpoint.products)),
+      writeJson(reportPath, checkpoint.report),
+    ]);
+    process.stdout.write(
+      `Processed ${processedProducts}/${inputProducts.length}: ` +
+        `${checkpoint.report.analysedProducts} analysed, ` +
+        `${checkpoint.report.cachedProducts} cached, ` +
+        `${checkpoint.report.failedProducts} failed\n`,
+    );
+    if (
+      processedProducts < inputProducts.length &&
+      attemptedProviderCall &&
+      delayMs > 0
+    ) {
+      await setTimeout(delayMs);
+    }
+  },
+});
 
 await Promise.all([
-  writeJson(productsPath, result.products),
+  writeJson(productsPath, mergeProducts(existing, result.products)),
   writeJson(reportPath, result.report),
 ]);
 
@@ -74,6 +105,14 @@ function parseLimit(value: string): number {
   return parsed;
 }
 
+function parseNonNegativeInteger(value: string): number {
+  const parsed = Number(value);
+  if (!Number.isSafeInteger(parsed) || parsed < 0) {
+    throw new Error('--delay-ms must be a non-negative integer.');
+  }
+  return parsed;
+}
+
 async function readJson(path: string): Promise<unknown> {
   return JSON.parse(await readFile(resolve(path), 'utf8')) as unknown;
 }
@@ -100,4 +139,17 @@ async function writeJson(path: string, value: unknown): Promise<void> {
   const resolvedPath = resolve(path);
   await mkdir(dirname(resolvedPath), { recursive: true });
   await writeFile(resolvedPath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
+}
+
+function mergeProducts(
+  existing: EnrichedProduct[],
+  processed: EnrichedProduct[],
+): EnrichedProduct[] {
+  const merged = new Map(
+    existing.map((entry) => [entry.product.id, entry] as const),
+  );
+  for (const entry of processed) {
+    merged.set(entry.product.id, entry);
+  }
+  return [...merged.values()];
 }

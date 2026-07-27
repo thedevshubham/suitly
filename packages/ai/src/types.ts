@@ -45,4 +45,7 @@ export type EnrichProductsOptions = {
   existing?: EnrichedProduct[];
   lowConfidenceThreshold?: number;
   now?: () => Date;
+  onProductProcessed?: (
+    result: ProductEnrichmentResult,
+  ) => Promise<void> | void;
 };

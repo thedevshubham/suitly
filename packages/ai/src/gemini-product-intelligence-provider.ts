@@ -207,6 +207,10 @@ export class GeminiProductIntelligenceProvider
       model: this.model,
       contents: [{ role: 'user', parts }],
       config: {
+        httpOptions: {
+          timeout: 60_000,
+          retryOptions: { attempts: 2 },
+        },
         responseMimeType: 'application/json',
         responseJsonSchema: productIntelligenceJsonSchema,
       },
