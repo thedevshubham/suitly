@@ -11,10 +11,11 @@ catalogue feeds through independent connectors.
 
 ## Current status
 
-Suitly is in the catalogue-ingestion stage of the MVP. The repository contains
+Suitly is in the product-intelligence stage of the MVP. The repository contains
 the accepted system design, durable engineering instructions, the
-platform-neutral folder structure, canonical catalogue schemas, and a tested
-Shopify CSV normalizer.
+platform-neutral folder structure, canonical catalogue schemas, a tested
+Shopify CSV normalizer, and a provider-independent cached product-enrichment
+pipeline.
 
 ## MVP objective
 
@@ -102,7 +103,7 @@ connectors/
 - Next.js and React for the initial web application
 - PostgreSQL and Drizzle ORM
 - Zod validation
-- OpenAI Responses API behind provider interfaces
+- Gemini or OpenAI multimodal APIs behind provider interfaces
 - Private S3-compatible temporary image storage
 - Vitest and Playwright
 
@@ -134,6 +135,17 @@ corepack pnpm normalize:sample
 
 Generated products and the ingestion report are written to `data/generated/`
 and are intentionally ignored by Git.
+
+To run one controlled product-intelligence request, copy `.env.example` to
+`.env.local`, select `gemini` or `openai`, add that provider's API key and model,
+normalize the sample, and run:
+
+```bash
+corepack pnpm enrich:sample:one
+```
+
+The command is explicitly limited to one product. It writes cached enriched
+products and a failure/low-confidence report under `data/generated/`.
 
 ## Privacy
 

@@ -14,7 +14,8 @@
     "lint": "eslint . --ext .ts --max-warnings 0",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "normalize:sample": "tsx packages/catalogue/src/cli.ts --input tests/fixtures/store-products-sample.csv --products data/generated/products.normalized.json --report data/generated/ingestion-report.json --currency USD"
+    "normalize:sample": "tsx packages/catalogue/src/cli.ts --input tests/fixtures/store-products-sample.csv --products data/generated/products.normalized.json --report data/generated/ingestion-report.json --currency USD",
+    "enrich:sample:one": "tsx packages/ai/src/cli.ts --input data/generated/products.normalized.json --products data/generated/products.enriched.json --report data/generated/product-enrichment-report.json --limit 1"
   },
   "devDependencies": {
     "@types/node": "22.10.5",

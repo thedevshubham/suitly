@@ -19,3 +19,6 @@ export type {
   ProductStatus,
   VariantOption,
 } from './catalogue.js';
+
+export { productIntelligenceSchema } from './product-intelligence.js';
+export type { ProductIntelligence } from './product-intelligence.js';
