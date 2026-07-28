@@ -20,8 +20,8 @@
     "benchmark:shopper-photo": "tsx packages/ai/src/shopper-vision-cli.ts",
     "benchmark:recommendation": "tsx packages/ai/src/recommendation-cli.ts",
     "smoke:recommend-api": "tsx apps/api/src/smoke-cli.ts",
-    "dev:web": "pnpm --filter @suitly/web dev",
-    "build:web": "pnpm --filter @suitly/web build"
+    "dev:web": "corepack pnpm --filter @suitly/web dev",
+    "build:web": "corepack pnpm --filter @suitly/web build"
   },
   "devDependencies": {
     "@types/node": "22.10.5",
