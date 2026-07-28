@@ -96,6 +96,7 @@ connectors/
 - [System architecture](docs/system-architecture.md)
 - [Product-intelligence evaluation](docs/product-intelligence-evaluation.md)
 - [Ollama product-intelligence evaluation](docs/ollama-product-intelligence-evaluation.md)
+- [Local shopper-photo benchmark](docs/shopper-photo-benchmark.md)
 - [ADR: Local Ollama product intelligence](docs/decisions/0001-local-ollama-product-intelligence.md)
 - [ADR: Local-only AI MVP](docs/decisions/0002-local-only-ai-mvp.md)
 - [Original product specification](suitly.md)
@@ -187,6 +188,18 @@ Cloud provider implementations remain available for intentional evaluation
 runs, but they are disabled by default. Enabling one requires both selecting
 the provider and setting `ENABLE_CLOUD_AI_PROVIDERS=true`; this prevents an
 accidental API call from ordinary MVP development.
+
+### Synthetic shopper-photo benchmark
+
+Run the private local-photo flow against the synthetic test fixture:
+
+```bash
+corepack pnpm benchmark:shopper-photo
+```
+
+The command validates and sanitizes the image, uses a private temporary file,
+analyses it through local Qwen, confirms deletion, and writes a non-photographic
+report under `data/generated/`.
 
 ## Privacy
 

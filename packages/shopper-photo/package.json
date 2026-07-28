@@ -1,0 +1,12 @@
+{
+  "name": "@suitly/shopper-photo",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "sharp": "0.34.4"
+  }
+}

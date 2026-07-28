@@ -13,6 +13,10 @@ export {
   type OllamaProductIntelligenceProviderOptions,
 } from './ollama-product-intelligence-provider.js';
 export { normalizeProductIntelligence } from './normalize-product-intelligence.js';
+export {
+  OllamaShopperVisionProvider,
+  type OllamaShopperVisionProviderOptions,
+} from './ollama-shopper-vision-provider.js';
 export { OpenAIProductIntelligenceProvider } from './openai-product-intelligence-provider.js';
 
 export type {
@@ -24,3 +28,7 @@ export type {
   ProductIntelligenceInput,
   ProductIntelligenceProvider,
 } from './types.js';
+export type {
+  ShopperVisionAnalysisInput,
+  ShopperVisionProvider,
+} from './shopper-vision-types.js';

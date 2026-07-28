@@ -22,3 +22,12 @@ export type {
 
 export { productIntelligenceSchema } from './product-intelligence.js';
 export type { ProductIntelligence } from './product-intelligence.js';
+
+export {
+  shopperVisionInputSchema,
+  shopperVisualProfileSchema,
+} from './shopper-vision.js';
+export type {
+  ShopperVisionInput,
+  ShopperVisualProfile,
+} from './shopper-vision.js';
