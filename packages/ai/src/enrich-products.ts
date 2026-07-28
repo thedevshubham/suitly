@@ -1,6 +1,7 @@
 import { productIntelligenceSchema, type CanonicalProduct } from '@suitly/core';
 
 import { createProductContentHash } from './content-hash.js';
+import { normalizeProductIntelligence } from './normalize-product-intelligence.js';
 import type {
   EnrichedProduct,
   EnrichProductsOptions,
@@ -35,8 +36,11 @@ export async function enrichProducts(
       cachedProducts += 1;
     } else {
       try {
-        const intelligence = productIntelligenceSchema.parse(
-          await provider.enrichProduct({ product }),
+        const startedAt = Date.now();
+        const intelligence = normalizeProductIntelligence(
+          productIntelligenceSchema.parse(
+            await provider.enrichProduct({ product }),
+          ),
         );
         enriched.push({
           product,
@@ -45,6 +49,7 @@ export async function enrichProducts(
           model: provider.model,
           promptVersion: provider.promptVersion,
           analysedAt: (options.now ?? (() => new Date()))().toISOString(),
+          analysisDurationMs: Date.now() - startedAt,
         });
         analysedProducts += 1;
       } catch (error) {

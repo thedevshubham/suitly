@@ -17,6 +17,7 @@ export type EnrichedProduct = {
   model: string;
   promptVersion: string;
   analysedAt: string;
+  analysisDurationMs?: number | undefined;
 };
 
 export type ProductEnrichmentFailure = {

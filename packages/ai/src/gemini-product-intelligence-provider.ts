@@ -4,149 +4,17 @@ import {
   type ProductIntelligence,
 } from '@suitly/core';
 
+import {
+  productIntelligenceJsonSchema,
+  productIntelligenceSystemPrompt,
+  serializeProductFacts,
+} from './product-intelligence-prompt.js';
 import type {
   ProductIntelligenceInput,
   ProductIntelligenceProvider,
 } from './types.js';
 
 const maximumImageBytes = 8 * 1024 * 1024;
-
-const systemPrompt = `
-You classify fashion products for a recommendation system.
-Use only the supplied catalogue facts and product image.
-Return "unknown" whenever evidence is insufficient.
-Do not infer shopper attributes, identity, or sensitive characteristics.
-Do not invent fabric, fit, construction, or commerce facts.
-Evidence must name the supplied sources that support the classification.
-Visual effects must describe garment appearance neutrally and must not promote
-an ideal body shape.
-`.trim();
-
-const productIntelligenceJsonSchema = {
-  type: 'object',
-  additionalProperties: false,
-  properties: {
-    category: {
-      type: 'string',
-      enum: [
-        't-shirt',
-        'shirt',
-        'top',
-        'jacket',
-        'jumper',
-        'dress',
-        'skirt',
-        'trousers',
-        'shoes',
-        'bag',
-        'other',
-        'unknown',
-      ],
-    },
-    fit: {
-      type: 'string',
-      enum: ['slim', 'regular', 'relaxed', 'oversized', 'unknown'],
-    },
-    shoulderConstruction: {
-      type: 'string',
-      enum: [
-        'standard',
-        'drop-shoulder',
-        'raglan',
-        'sleeveless',
-        'not-applicable',
-        'unknown',
-      ],
-    },
-    silhouette: {
-      type: 'string',
-      enum: [
-        'tapered',
-        'straight',
-        'boxy',
-        'fitted',
-        'flared',
-        'not-applicable',
-        'unknown',
-      ],
-    },
-    length: {
-      type: 'string',
-      enum: [
-        'cropped',
-        'short',
-        'standard',
-        'long',
-        'not-applicable',
-        'unknown',
-      ],
-    },
-    neckline: {
-      type: 'string',
-      enum: [
-        'crew',
-        'v-neck',
-        'henley',
-        'collared',
-        'scoop',
-        'high-neck',
-        'not-applicable',
-        'unknown',
-      ],
-    },
-    sleeveFit: {
-      type: 'string',
-      enum: [
-        'fitted',
-        'regular',
-        'loose',
-        'sleeveless',
-        'not-applicable',
-        'unknown',
-      ],
-    },
-    fabricWeight: {
-      type: 'string',
-      enum: ['light', 'medium', 'heavy', 'not-applicable', 'unknown'],
-    },
-    stretch: {
-      type: 'string',
-      enum: ['none', 'low', 'medium', 'high', 'not-applicable', 'unknown'],
-    },
-    styleContexts: {
-      type: 'array',
-      items: { type: 'string' },
-      maxItems: 8,
-    },
-    visualEffects: {
-      type: 'array',
-      items: { type: 'string' },
-      maxItems: 8,
-    },
-    confidence: { type: 'number', minimum: 0, maximum: 1 },
-    evidence: {
-      type: 'array',
-      items: { type: 'string' },
-      minItems: 1,
-      maxItems: 8,
-    },
-  },
-  required: [
-    'category',
-    'fit',
-    'shoulderConstruction',
-    'silhouette',
-    'length',
-    'neckline',
-    'sleeveFit',
-    'fabricWeight',
-    'stretch',
-    'styleContexts',
-    'visualEffects',
-    'confidence',
-    'evidence',
-  ],
-} as const;
 
 type GeminiClient = Pick<GoogleGenAI, 'models'>;
 type FetchImage = (url: string) => Promise<{
@@ -162,7 +30,7 @@ export type GeminiProductIntelligenceProviderOptions = {
 export class GeminiProductIntelligenceProvider
   implements ProductIntelligenceProvider
 {
-  public readonly promptVersion = 'product-intelligence-v1';
+  public readonly promptVersion = 'product-intelligence-v3';
   private readonly client: GeminiClient;
   private readonly fetchImage: FetchImage;
 
@@ -179,23 +47,13 @@ export class GeminiProductIntelligenceProvider
     input: ProductIntelligenceInput,
   ): Promise<ProductIntelligence> {
     const product = input.product;
-    const catalogueFacts = JSON.stringify(
-      {
-        title: product.title,
-        description: product.descriptionText,
-        vendor: product.vendor,
-        category: product.productCategory,
-        type: product.productType,
-        tags: product.tags,
-        options: product.variants[0]?.options ?? [],
-      },
-      null,
-      2,
-    );
+    const catalogueFacts = serializeProductFacts(product);
     const parts: Array<
       { text: string } | { inlineData: { data: string; mimeType: string } }
     > = [
-      { text: `${systemPrompt}\n\nAnalyse this product:\n${catalogueFacts}` },
+      {
+        text: `${productIntelligenceSystemPrompt}\n\nAnalyse this product:\n${catalogueFacts}`,
+      },
     ];
     const imageUrl = product.images[0]?.url;
 

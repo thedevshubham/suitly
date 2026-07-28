@@ -1,8 +1,9 @@
 import { GeminiProductIntelligenceProvider } from './gemini-product-intelligence-provider.js';
+import { OllamaProductIntelligenceProvider } from './ollama-product-intelligence-provider.js';
 import { OpenAIProductIntelligenceProvider } from './openai-product-intelligence-provider.js';
 import type { ProductIntelligenceProvider } from './types.js';
 
-export type ProductIntelligenceProviderName = 'gemini' | 'openai';
+export type ProductIntelligenceProviderName = 'gemini' | 'ollama' | 'openai';
 
 export function createProductIntelligenceProvider(
   environment: NodeJS.ProcessEnv,
@@ -26,8 +27,21 @@ export function createProductIntelligenceProvider(
     );
   }
 
+  if (provider === 'ollama') {
+    return new OllamaProductIntelligenceProvider(
+      requiredEnvironment(environment, 'PRODUCT_INTELLIGENCE_MODEL'),
+      {
+        baseUrl: environment.OLLAMA_BASE_URL,
+        includeImages: parseBoolean(
+          environment.OLLAMA_PRODUCT_INTELLIGENCE_VISION ?? 'true',
+          'OLLAMA_PRODUCT_INTELLIGENCE_VISION',
+        ),
+      },
+    );
+  }
+
   throw new Error(
-    'PRODUCT_INTELLIGENCE_PROVIDER must be either "gemini" or "openai".',
+    'PRODUCT_INTELLIGENCE_PROVIDER must be "gemini", "ollama", or "openai".',
   );
 }
 
@@ -40,4 +54,14 @@ function requiredEnvironment(
     throw new Error(`Missing required environment variable: ${key}`);
   }
   return value;
+}
+
+function parseBoolean(value: string, key: string): boolean {
+  if (value === 'true') {
+    return true;
+  }
+  if (value === 'false') {
+    return false;
+  }
+  throw new Error(`${key} must be either "true" or "false".`);
 }

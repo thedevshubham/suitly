@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { createProductIntelligenceProvider } from './create-product-intelligence-provider.js';
 import { GeminiProductIntelligenceProvider } from './gemini-product-intelligence-provider.js';
+import { OllamaProductIntelligenceProvider } from './ollama-product-intelligence-provider.js';
 import { OpenAIProductIntelligenceProvider } from './openai-product-intelligence-provider.js';
 
 describe('createProductIntelligenceProvider', () => {
@@ -27,13 +28,24 @@ describe('createProductIntelligenceProvider', () => {
     expect(provider.model).toBe('openai-test');
   });
 
+  it('creates a local Ollama provider without an API key', () => {
+    const provider = createProductIntelligenceProvider({
+      PRODUCT_INTELLIGENCE_PROVIDER: 'ollama',
+      PRODUCT_INTELLIGENCE_MODEL: 'qwen3.5:4b',
+      OLLAMA_PRODUCT_INTELLIGENCE_VISION: 'true',
+    });
+
+    expect(provider).toBeInstanceOf(OllamaProductIntelligenceProvider);
+    expect(provider.model).toBe('qwen3.5:4b');
+  });
+
   it('rejects unsupported providers', () => {
     expect(() =>
       createProductIntelligenceProvider({
         PRODUCT_INTELLIGENCE_PROVIDER: 'unsupported',
       }),
     ).toThrow(
-      'PRODUCT_INTELLIGENCE_PROVIDER must be either "gemini" or "openai".',
+      'PRODUCT_INTELLIGENCE_PROVIDER must be "gemini", "ollama", or "openai".',
     );
   });
 });

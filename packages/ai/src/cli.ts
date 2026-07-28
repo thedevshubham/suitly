@@ -129,6 +129,7 @@ async function readExisting(path: string): Promise<EnrichedProduct[]> {
     model: z.string(),
     promptVersion: z.string(),
     analysedAt: z.string().datetime(),
+    analysisDurationMs: z.number().int().nonnegative().optional(),
   });
   const stored = storedEntrySchema.array().parse(await readJson(path));
 

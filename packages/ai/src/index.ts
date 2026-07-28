@@ -8,6 +8,11 @@ export {
   GeminiProductIntelligenceProvider,
   type GeminiProductIntelligenceProviderOptions,
 } from './gemini-product-intelligence-provider.js';
+export {
+  OllamaProductIntelligenceProvider,
+  type OllamaProductIntelligenceProviderOptions,
+} from './ollama-product-intelligence-provider.js';
+export { normalizeProductIntelligence } from './normalize-product-intelligence.js';
 export { OpenAIProductIntelligenceProvider } from './openai-product-intelligence-provider.js';
 
 export type {

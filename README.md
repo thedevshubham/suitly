@@ -95,6 +95,8 @@ connectors/
 
 - [System architecture](docs/system-architecture.md)
 - [Product-intelligence evaluation](docs/product-intelligence-evaluation.md)
+- [Ollama product-intelligence evaluation](docs/ollama-product-intelligence-evaluation.md)
+- [ADR: Local Ollama product intelligence](docs/decisions/0001-local-ollama-product-intelligence.md)
 - [Original product specification](suitly.md)
 - [Engineering agent instructions](AGENTS.md)
 
@@ -158,6 +160,29 @@ corepack pnpm enrich:sample
 The batch checkpoints after every product, so an interrupted run can resume
 from its cached results. The CLI also accepts `--offset` and `--limit` for a
 targeted retry while preserving the rest of the cache.
+
+### Local Ollama models
+
+Product intelligence can run locally without an API key. Configure Qwen for
+image-and-text enrichment:
+
+```env
+PRODUCT_INTELLIGENCE_PROVIDER=ollama
+PRODUCT_INTELLIGENCE_MODEL=qwen3.5:4b
+OLLAMA_BASE_URL=http://127.0.0.1:11434
+OLLAMA_PRODUCT_INTELLIGENCE_VISION=true
+```
+
+The installed `llama3.2:latest` model is text-only. Use it as a catalogue-text
+fallback by changing the model and disabling vision:
+
+```env
+PRODUCT_INTELLIGENCE_MODEL=llama3.2:latest
+OLLAMA_PRODUCT_INTELLIGENCE_VISION=false
+```
+
+Keep local-model evaluation outputs separate from the accepted Gemini cache by
+passing different `--products` and `--report` paths under `data/generated/`.
 
 ## Privacy
 
