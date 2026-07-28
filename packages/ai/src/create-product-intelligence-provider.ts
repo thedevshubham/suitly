@@ -14,6 +14,7 @@ export function createProductIntelligenceProvider(
   );
 
   if (provider === 'gemini') {
+    assertCloudProvidersEnabled(environment);
     return new GeminiProductIntelligenceProvider(
       requiredEnvironment(environment, 'PRODUCT_INTELLIGENCE_MODEL'),
       requiredEnvironment(environment, 'GEMINI_API_KEY'),
@@ -21,6 +22,7 @@ export function createProductIntelligenceProvider(
   }
 
   if (provider === 'openai') {
+    assertCloudProvidersEnabled(environment);
     return new OpenAIProductIntelligenceProvider(
       requiredEnvironment(environment, 'PRODUCT_INTELLIGENCE_MODEL'),
       requiredEnvironment(environment, 'OPENAI_API_KEY'),
@@ -54,6 +56,19 @@ function requiredEnvironment(
     throw new Error(`Missing required environment variable: ${key}`);
   }
   return value;
+}
+
+function assertCloudProvidersEnabled(environment: NodeJS.ProcessEnv): void {
+  const enabled = parseBoolean(
+    environment.ENABLE_CLOUD_AI_PROVIDERS ?? 'false',
+    'ENABLE_CLOUD_AI_PROVIDERS',
+  );
+  if (!enabled) {
+    throw new Error(
+      'Cloud AI providers are disabled. Set ENABLE_CLOUD_AI_PROVIDERS=true ' +
+        'only for an intentional evaluation run.',
+    );
+  }
 }
 
 function parseBoolean(value: string, key: string): boolean {

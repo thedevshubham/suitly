@@ -97,6 +97,7 @@ connectors/
 - [Product-intelligence evaluation](docs/product-intelligence-evaluation.md)
 - [Ollama product-intelligence evaluation](docs/ollama-product-intelligence-evaluation.md)
 - [ADR: Local Ollama product intelligence](docs/decisions/0001-local-ollama-product-intelligence.md)
+- [ADR: Local-only AI MVP](docs/decisions/0002-local-only-ai-mvp.md)
 - [Original product specification](suitly.md)
 - [Engineering agent instructions](AGENTS.md)
 
@@ -106,7 +107,7 @@ connectors/
 - Next.js and React for the initial web application
 - PostgreSQL and Drizzle ORM
 - Zod validation
-- Gemini or OpenAI multimodal APIs behind provider interfaces
+- Local Ollama models behind provider interfaces
 - Private S3-compatible temporary image storage
 - Vitest and Playwright
 
@@ -140,8 +141,7 @@ Generated products and the ingestion report are written to `data/generated/`
 and are intentionally ignored by Git.
 
 To run one controlled product-intelligence request, copy `.env.example` to
-`.env.local`, select `gemini` or `openai`, add that provider's API key and model,
-normalize the sample, and run:
+`.env.local`, ensure Ollama is running, normalize the sample, and run:
 
 ```bash
 corepack pnpm enrich:sample:one
@@ -150,8 +150,7 @@ corepack pnpm enrich:sample:one
 The command is explicitly limited to one product. It writes cached enriched
 products and a failure/low-confidence report under `data/generated/`.
 
-After verifying one product, enrich the complete sample catalogue with
-free-tier-friendly request pacing:
+After verifying one product, enrich the complete sample catalogue:
 
 ```bash
 corepack pnpm enrich:sample
@@ -183,6 +182,11 @@ OLLAMA_PRODUCT_INTELLIGENCE_VISION=false
 
 Keep local-model evaluation outputs separate from the accepted Gemini cache by
 passing different `--products` and `--report` paths under `data/generated/`.
+
+Cloud provider implementations remain available for intentional evaluation
+runs, but they are disabled by default. Enabling one requires both selecting
+the provider and setting `ENABLE_CLOUD_AI_PROVIDERS=true`; this prevents an
+accidental API call from ordinary MVP development.
 
 ## Privacy
 

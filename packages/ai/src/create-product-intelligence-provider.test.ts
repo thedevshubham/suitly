@@ -11,6 +11,7 @@ describe('createProductIntelligenceProvider', () => {
       PRODUCT_INTELLIGENCE_PROVIDER: 'gemini',
       GEMINI_API_KEY: 'test-key',
       PRODUCT_INTELLIGENCE_MODEL: 'gemini-test',
+      ENABLE_CLOUD_AI_PROVIDERS: 'true',
     });
 
     expect(provider).toBeInstanceOf(GeminiProductIntelligenceProvider);
@@ -22,10 +23,21 @@ describe('createProductIntelligenceProvider', () => {
       PRODUCT_INTELLIGENCE_PROVIDER: 'openai',
       OPENAI_API_KEY: 'test-key',
       PRODUCT_INTELLIGENCE_MODEL: 'openai-test',
+      ENABLE_CLOUD_AI_PROVIDERS: 'true',
     });
 
     expect(provider).toBeInstanceOf(OpenAIProductIntelligenceProvider);
     expect(provider.model).toBe('openai-test');
+  });
+
+  it('blocks cloud providers by default', () => {
+    expect(() =>
+      createProductIntelligenceProvider({
+        PRODUCT_INTELLIGENCE_PROVIDER: 'gemini',
+        GEMINI_API_KEY: 'test-key',
+        PRODUCT_INTELLIGENCE_MODEL: 'gemini-test',
+      }),
+    ).toThrow('Cloud AI providers are disabled.');
   });
 
   it('creates a local Ollama provider without an API key', () => {

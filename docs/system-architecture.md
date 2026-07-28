@@ -326,15 +326,17 @@ Initial model roles:
 
 | Task | Initial model strategy |
 |---|---|
-| Product enrichment | GPT-5.6 Terra, processed asynchronously and cached |
-| Evaluation benchmark | GPT-5.6 Sol |
-| Live photo analysis and ranking | GPT-5.6 Terra if it meets the benchmark |
+| Product enrichment | Local Qwen 3.5 4B through Ollama, processed asynchronously and cached |
+| Evaluation benchmark | Human-labelled evaluation set; cloud comparison only by explicit opt-in |
+| Live photo analysis and ranking | Local Qwen candidate, subject to latency and quality benchmark |
 | Ambiguous photo | Ask for a better photo rather than silently spending twice |
-| Conversational refinement | GPT-5.6 Terra, after the first MVP |
+| Conversational refinement | Local model, after the first MVP |
 | Embeddings | None until catalogue scale demonstrates a need |
 
 Model identifiers, thresholds, schema versions, and prompt versions are
-configuration. Do not hardcode them throughout application modules.
+configuration. Do not hardcode them throughout application modules. Cloud AI
+implementations remain available for controlled evaluation but are disabled by
+default during the local-only MVP.
 
 ## 9. Canonical domain model
 
@@ -454,7 +456,7 @@ specific recoverable errors while work completes.
 - Zod
 - PostgreSQL
 - Drizzle ORM
-- OpenAI Responses API behind provider interfaces
+- Ollama-hosted local models behind provider interfaces
 - Cloudflare R2 or equivalent private S3-compatible storage
 - Sharp
 - Vitest
