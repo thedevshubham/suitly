@@ -9,6 +9,7 @@
   "dependencies": {
     "@google/genai": "2.13.0",
     "@suitly/core": "workspace:*",
+    "@suitly/recommendation": "workspace:*",
     "@suitly/shopper-photo": "workspace:*",
     "openai": "6.49.0",
     "zod": "3.25.76"

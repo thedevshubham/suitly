@@ -31,3 +31,12 @@ export type {
   ShopperVisionInput,
   ShopperVisualProfile,
 } from './shopper-vision.js';
+
+export {
+  aiRankedRecommendationSchema,
+  aiRecommendationResultSchema,
+} from './recommendation.js';
+export type {
+  AIRankedRecommendation,
+  AIRecommendationResult,
+} from './recommendation.js';

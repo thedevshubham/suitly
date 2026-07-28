@@ -11,11 +11,11 @@ catalogue feeds through independent connectors.
 
 ## Current status
 
-Suitly is in the product-intelligence stage of the MVP. The repository contains
-the accepted system design, durable engineering instructions, the
-platform-neutral folder structure, canonical catalogue schemas, a tested
-Shopify CSV normalizer, and a provider-independent cached product-enrichment
-pipeline.
+Suitly has completed the catalogue, local product-intelligence, private
+shopper-photo, and recommendation-engine foundations of the MVP. The
+recommendation layer now provides deterministic filtering and scoring, guarded
+local Qwen comparative ranking, trusted catalogue hydration, and deterministic
+fallback.
 
 ## MVP objective
 
@@ -97,8 +97,10 @@ connectors/
 - [Product-intelligence evaluation](docs/product-intelligence-evaluation.md)
 - [Ollama product-intelligence evaluation](docs/ollama-product-intelligence-evaluation.md)
 - [Local shopper-photo benchmark](docs/shopper-photo-benchmark.md)
+- [Recommendation-engine benchmark](docs/recommendation-engine-benchmark.md)
 - [ADR: Local Ollama product intelligence](docs/decisions/0001-local-ollama-product-intelligence.md)
 - [ADR: Local-only AI MVP](docs/decisions/0002-local-only-ai-mvp.md)
+- [ADR: Deterministic recommendation default](docs/decisions/0003-deterministic-recommendation-default.md)
 - [Original product specification](suitly.md)
 - [Engineering agent instructions](AGENTS.md)
 
@@ -200,6 +202,22 @@ corepack pnpm benchmark:shopper-photo
 The command validates and sanitizes the image, uses a private temporary file,
 analyses it through local Qwen, confirms deletion, and writes a non-photographic
 report under `data/generated/`.
+
+### Recommendation benchmark
+
+Run the guarded end-to-end comparative ranker:
+
+```bash
+corepack pnpm benchmark:recommendation
+```
+
+The benchmark filters and scores candidates, makes one local multimodal Qwen
+request, validates its output, hydrates catalogue facts locally, and fills
+invalid results deterministically. This combined AI ranker is experimental:
+the interactive MVP path uses the faster standalone shopper-photo analysis
+followed by deterministic ranking. See the
+[benchmark report](docs/recommendation-engine-benchmark.md) for measurements
+and the decision rationale.
 
 ## Privacy
 

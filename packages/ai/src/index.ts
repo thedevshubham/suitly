@@ -17,6 +17,11 @@ export {
   OllamaShopperVisionProvider,
   type OllamaShopperVisionProviderOptions,
 } from './ollama-shopper-vision-provider.js';
+export {
+  OllamaRecommendationProvider,
+  type OllamaRecommendationInput,
+  type OllamaRecommendationProviderOptions,
+} from './ollama-recommendation-provider.js';
 export { OpenAIProductIntelligenceProvider } from './openai-product-intelligence-provider.js';
 
 export type {

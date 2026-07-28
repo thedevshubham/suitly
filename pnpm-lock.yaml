@@ -43,6 +43,9 @@ importers:
       '@suitly/core':
         specifier: workspace:*
         version: link:../core
+      '@suitly/recommendation':
+        specifier: workspace:*
+        version: link:../recommendation
       '@suitly/shopper-photo':
         specifier: workspace:*
         version: link:../shopper-photo
@@ -70,6 +73,12 @@ importers:
       zod:
         specifier: 3.25.76
         version: 3.25.76
+
+  packages/recommendation:
+    dependencies:
+      '@suitly/core':
+        specifier: workspace:*
+        version: link:../core
 
   packages/shopper-photo:
     dependencies:
