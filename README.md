@@ -236,6 +236,19 @@ The handler uses `data/generated/products.enriched.ollama-qwen.json` and the
 Ollama settings from `.env.local`. If local analysis is unavailable, it returns
 preference-based deterministic results with an explicit warning.
 
+### Shopper demo
+
+Start the local browser demo:
+
+```bash
+corepack pnpm dev:web
+```
+
+Then open `http://localhost:3000`. You can upload a compatible full-body photo
+or use the included synthetic fixture, enter shopper preferences, and view
+three catalogue-grounded recommendation cards. Ollama must be running; warm
+requests are substantially faster than cold model starts.
+
 ## Privacy
 
 Shopper photographs will be processed through private temporary storage and

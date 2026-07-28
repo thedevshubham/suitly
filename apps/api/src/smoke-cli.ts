@@ -27,7 +27,7 @@ const response = await createLocalRecommendHandler()(
     body: form,
   }),
 );
-const body = await response.json();
+const body: unknown = await response.json();
 
 process.stdout.write(
   `${JSON.stringify({ status: response.status, body }, null, 2)}\n`,

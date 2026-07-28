@@ -4,9 +4,10 @@ import { OpenAIProductIntelligenceProvider } from './openai-product-intelligence
 import type { ProductIntelligenceProvider } from './types.js';
 
 export type ProductIntelligenceProviderName = 'gemini' | 'ollama' | 'openai';
+type ProviderEnvironment = Readonly<Record<string, string | undefined>>;
 
 export function createProductIntelligenceProvider(
-  environment: NodeJS.ProcessEnv,
+  environment: ProviderEnvironment,
 ): ProductIntelligenceProvider {
   const provider = requiredEnvironment(
     environment,
@@ -48,7 +49,7 @@ export function createProductIntelligenceProvider(
 }
 
 function requiredEnvironment(
-  environment: NodeJS.ProcessEnv,
+  environment: ProviderEnvironment,
   key: string,
 ): string {
   const value = environment[key];
@@ -58,7 +59,7 @@ function requiredEnvironment(
   return value;
 }
 
-function assertCloudProvidersEnabled(environment: NodeJS.ProcessEnv): void {
+function assertCloudProvidersEnabled(environment: ProviderEnvironment): void {
   const enabled = parseBoolean(
     environment.ENABLE_CLOUD_AI_PROVIDERS ?? 'false',
     'ENABLE_CLOUD_AI_PROVIDERS',
