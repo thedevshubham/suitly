@@ -51,6 +51,7 @@ const candidate = {
   deterministicScore: 85,
   scoreComponents: {
     colour: 1,
+    silhouetteCompatibility: 1,
     heightLength: 1,
     productConfidence: 0.9,
     sizeEvidence: 0.5,

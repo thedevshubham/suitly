@@ -116,6 +116,38 @@ export function deterministicFallback(
   limit = 3,
   warnings = ['AI ranking was unavailable; deterministic ranking was used.'],
 ): RecommendationResponse {
+  return deterministicResponse(
+    candidates,
+    limit,
+    warnings,
+    'deterministic-fallback',
+    true,
+  );
+}
+
+export function deterministicRecommendations(
+  candidates: ScoredCandidate[],
+  limit = 3,
+  warnings = [
+    'Recommendations use local shopper analysis and deterministic catalogue ranking.',
+  ],
+): RecommendationResponse {
+  return deterministicResponse(
+    candidates,
+    limit,
+    warnings,
+    'deterministic',
+    false,
+  );
+}
+
+function deterministicResponse(
+  candidates: ScoredCandidate[],
+  limit: number,
+  warnings: string[],
+  source: 'deterministic' | 'deterministic-fallback',
+  usedFallback: boolean,
+): RecommendationResponse {
   return {
     recommendations: candidates.slice(0, limit).map((candidate) =>
       hydrate(
@@ -132,11 +164,11 @@ export function deterministicFallback(
           ],
           fitRisk: 'No size-chart evidence is available for confident sizing.',
         },
-        'deterministic-fallback',
+        source,
       ),
     ),
     warnings,
-    usedFallback: true,
+    usedFallback,
   };
 }
 

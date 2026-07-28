@@ -35,6 +35,24 @@ importers:
         specifier: 2.1.8
         version: 2.1.8(@types/node@22.10.5)
 
+  apps/api:
+    dependencies:
+      '@suitly/ai':
+        specifier: workspace:*
+        version: link:../../packages/ai
+      '@suitly/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@suitly/recommendation':
+        specifier: workspace:*
+        version: link:../../packages/recommendation
+      '@suitly/shopper-photo':
+        specifier: workspace:*
+        version: link:../../packages/shopper-photo
+      zod:
+        specifier: 3.25.76
+        version: 3.25.76
+
   packages/ai:
     dependencies:
       '@google/genai':

@@ -14,7 +14,10 @@ export function buildScoredCandidates(
   return enrichedProducts
     .flatMap((entry) => {
       const variant = selectEligibleVariant(entry, request);
-      if (variant === undefined) {
+      if (
+        variant === undefined ||
+        isLessSuitable(entry, request.shopperProfile?.lessSuitableSilhouettes)
+      ) {
         return [];
       }
 
@@ -85,11 +88,43 @@ function scoreCandidate(
 
   return {
     colour,
+    silhouetteCompatibility: scoreSilhouetteCompatibility(entry, request),
     heightLength,
     productConfidence: entry.intelligence.confidence,
     sizeEvidence,
     merchandising: 0.5,
   };
+}
+
+function isLessSuitable(
+  entry: EnrichedCatalogueProduct,
+  lessSuitableSilhouettes: string[] | undefined,
+): boolean {
+  const lessSuitable = new Set(
+    (lessSuitableSilhouettes ?? []).map((value) => value.toLowerCase()),
+  );
+  return (
+    lessSuitable.has(entry.intelligence.fit.toLowerCase()) ||
+    lessSuitable.has(entry.intelligence.silhouette.toLowerCase())
+  );
+}
+
+function scoreSilhouetteCompatibility(
+  entry: EnrichedCatalogueProduct,
+  request: RecommendationRequest,
+): number {
+  const recommended = new Set(
+    (request.shopperProfile?.recommendedSilhouettes ?? []).map((value) =>
+      value.toLowerCase(),
+    ),
+  );
+  if (recommended.size === 0) {
+    return 0.5;
+  }
+  return recommended.has(entry.intelligence.fit.toLowerCase()) ||
+    recommended.has(entry.intelligence.silhouette.toLowerCase())
+    ? 1
+    : 0.5;
 }
 
 function scoreHeightLength(
@@ -114,11 +149,12 @@ function scoreHeightLength(
 
 function weightedScore(components: ScoreComponents): number {
   return Math.round(
-    (components.colour * 0.35 +
-      components.heightLength * 0.2 +
-      components.productConfidence * 0.2 +
-      components.sizeEvidence * 0.15 +
-      components.merchandising * 0.1) *
+    (components.colour * 0.25 +
+      components.silhouetteCompatibility * 0.3 +
+      components.heightLength * 0.15 +
+      components.productConfidence * 0.15 +
+      components.sizeEvidence * 0.1 +
+      components.merchandising * 0.05) *
       100,
   );
 }

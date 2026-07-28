@@ -18,7 +18,8 @@
     "enrich:sample:one": "tsx packages/ai/src/cli.ts --input data/generated/products.normalized.json --products data/generated/products.enriched.json --report data/generated/product-enrichment-report.json --limit 1",
     "enrich:sample": "tsx packages/ai/src/cli.ts --input data/generated/products.normalized.json --products data/generated/products.enriched.json --report data/generated/product-enrichment-report.json --limit 20 --delay-ms 7000",
     "benchmark:shopper-photo": "tsx packages/ai/src/shopper-vision-cli.ts",
-    "benchmark:recommendation": "tsx packages/ai/src/recommendation-cli.ts"
+    "benchmark:recommendation": "tsx packages/ai/src/recommendation-cli.ts",
+    "smoke:recommend-api": "tsx apps/api/src/smoke-cli.ts"
   },
   "devDependencies": {
     "@types/node": "22.10.5",

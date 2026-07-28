@@ -219,6 +219,23 @@ followed by deterministic ranking. See the
 [benchmark report](docs/recommendation-engine-benchmark.md) for measurements
 and the decision rationale.
 
+### Local recommendation API
+
+The framework-independent API handler accepts the planned
+`POST /api/recommend` multipart contract. It validates shopper fields, prepares
+and deletes the private temporary photo, runs local shopper analysis, filters
+and ranks the cached catalogue, and returns trusted recommendation cards.
+
+Run a real local smoke request with the synthetic fixture:
+
+```bash
+corepack pnpm smoke:recommend-api
+```
+
+The handler uses `data/generated/products.enriched.ollama-qwen.json` and the
+Ollama settings from `.env.local`. If local analysis is unavailable, it returns
+preference-based deterministic results with an explicit warning.
+
 ## Privacy
 
 Shopper photographs will be processed through private temporary storage and

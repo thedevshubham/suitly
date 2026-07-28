@@ -105,8 +105,44 @@ describe('buildScoredCandidates', () => {
     ]);
     expect(candidates[0]?.scoreComponents).toMatchObject({
       colour: 1,
+      silhouetteCompatibility: 0.5,
       productConfidence: 0.9,
     });
+  });
+
+  it('uses the shopper profile to exclude poor silhouettes and boost matches', () => {
+    const boxy = enrichedProduct('boxy');
+    boxy.intelligence = {
+      ...boxy.intelligence,
+      silhouette: 'boxy',
+    };
+    const relaxed = enrichedProduct('relaxed');
+    relaxed.intelligence = {
+      ...relaxed.intelligence,
+      fit: 'relaxed',
+    };
+
+    const candidates = buildScoredCandidates([boxy, relaxed], {
+      ...request,
+      shopperProfile: {
+        imageValid: true,
+        imageIssues: [],
+        visibleBuild: 'average',
+        shoulderProfile: 'balanced',
+        shoulderToHipProfile: 'balanced',
+        torsoProportion: 'balanced',
+        legProportion: 'balanced',
+        recommendedSilhouettes: ['relaxed'],
+        lessSuitableSilhouettes: ['boxy'],
+        styleConfidence: 0.8,
+        geometryConfidence: 0.7,
+      },
+    });
+
+    expect(candidates.map((candidate) => candidate.product.id)).toEqual([
+      'relaxed',
+    ]);
+    expect(candidates[0]?.scoreComponents.silhouetteCompatibility).toBe(1);
   });
 });
 

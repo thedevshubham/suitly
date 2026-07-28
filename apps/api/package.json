@@ -1,0 +1,16 @@
+{
+  "name": "@suitly/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@suitly/ai": "workspace:*",
+    "@suitly/core": "workspace:*",
+    "@suitly/recommendation": "workspace:*",
+    "@suitly/shopper-photo": "workspace:*",
+    "zod": "3.25.76"
+  }
+}

@@ -2,6 +2,7 @@ import type {
   CanonicalProduct,
   CanonicalVariant,
   ProductIntelligence,
+  ShopperVisualProfile,
 } from '@suitly/core';
 
 export type EnrichedCatalogueProduct = {
@@ -15,12 +16,14 @@ export type RecommendationRequest = {
   weightKg: number;
   preferredColours: string[];
   category: ProductIntelligence['category'];
-  maximumPriceMinor?: number;
-  allowAlternativeColours?: boolean;
+  shopperProfile?: ShopperVisualProfile;
+  maximumPriceMinor?: number | undefined;
+  allowAlternativeColours?: boolean | undefined;
 };
 
 export type ScoreComponents = {
   colour: number;
+  silhouetteCompatibility: number;
   heightLength: number;
   productConfidence: number;
   sizeEvidence: number;
@@ -52,7 +55,7 @@ export type HydratedRecommendation = {
   sizeConfidence: number;
   reasons: string[];
   fitRisk?: string | undefined;
-  source: 'ai' | 'deterministic-fallback';
+  source: 'ai' | 'deterministic' | 'deterministic-fallback';
   deterministicScore: number;
   scoreComponents: ScoreComponents;
 };
