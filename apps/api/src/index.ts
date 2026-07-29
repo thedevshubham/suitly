@@ -15,6 +15,10 @@ export {
   type EvaluationSummary,
 } from './evaluation-summary.js';
 export {
+  createEvaluationSummaryHttpHandler,
+  type EvaluationDashboardSummary,
+} from './evaluation-summary-handler.js';
+export {
   createLocalRecommendHandler,
   type LocalRecommendHandlerOptions,
 } from './local-handler.js';

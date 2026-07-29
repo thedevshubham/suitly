@@ -265,6 +265,9 @@ written to an ignored JSONL file. Summarize the collected signals with:
 corepack pnpm report:evaluation
 ```
 
+The same metrics are available in the local read-only dashboard at
+`http://localhost:3000/evaluation` while the web app is running.
+
 Run the repeatable 20-case catalogue-safety evaluation with:
 
 ```bash

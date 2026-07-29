@@ -59,3 +59,16 @@ The summary includes:
 The report becomes meaningful only after multiple representative shopper cases
 have been collected. It is an evaluation aid, not evidence of recommendation
 quality by itself.
+
+## Dashboard
+
+While the local web application is running, open:
+
+```text
+http://localhost:3000/evaluation
+```
+
+The read-only dashboard displays the same privacy-limited event trail as metric
+cards, shopper-signal bars, latency percentiles, fallback usage, and
+catalogue-hydrated product feedback. Use Refresh data after completing new
+shopper sessions.

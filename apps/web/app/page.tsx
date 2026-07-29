@@ -10,7 +10,7 @@ export default function HomePage() {
         </a>
         <div className="nav-note">
           <span className="status-dot" />
-          Local AI · Private by design
+          <a href="/evaluation">View evaluation</a>
         </div>
       </nav>
 
