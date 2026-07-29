@@ -19,6 +19,7 @@ import type {
   RecommendShopperInput,
   RecommendShopperResponse,
 } from './types.js';
+import type { EvaluationRepository } from './evaluation-types.js';
 
 const recommendShopperFieldsSchema = shopperVisionInputSchema.extend({
   merchantId: z.string().trim().min(1),
@@ -31,6 +32,7 @@ const recommendShopperFieldsSchema = shopperVisionInputSchema.extend({
 export type RecommendShopperDependencies = {
   catalogue: CatalogueRepository;
   shopperVision: ShopperVisionProvider;
+  evaluation?: EvaluationRepository;
   createRecommendationId?: () => string;
   temporaryRoot?: string;
 };
@@ -47,7 +49,7 @@ export async function recommendShopper(
     fields.merchantId,
   );
 
-  return withTemporaryShopperPhoto(
+  const response = await withTemporaryShopperPhoto<RecommendShopperResponse>(
     input.photo,
     async (photo) => {
       const analysisStartedAt = performance.now();
@@ -129,6 +131,29 @@ export async function recommendShopper(
         : { temporaryRoot: dependencies.temporaryRoot }),
     },
   );
+
+  if (dependencies.evaluation !== undefined) {
+    try {
+      await dependencies.evaluation.recordRecommendation({
+        type: 'recommendation-created',
+        recommendationId: response.recommendationId,
+        merchantId: fields.merchantId,
+        audience: fields.audience,
+        category: fields.category,
+        productIds: response.recommendations.map((item) => item.productId),
+        photoStatus: response.photoStatus,
+        usedFallback: response.usedFallback,
+        totalMs: response.timing.totalMs,
+        createdAt: new Date().toISOString(),
+      });
+    } catch {
+      response.warnings.push(
+        'Recommendation feedback capture is temporarily unavailable.',
+      );
+    }
+  }
+
+  return response;
 }
 
 function summarizeProfile(

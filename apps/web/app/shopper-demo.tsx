@@ -39,6 +39,8 @@ type ErrorResponse = {
   error?: { message?: string; issues?: { path: string; message: string }[] };
 };
 
+type ShopperFeedback = 'liked' | 'disliked' | 'would-buy';
+
 type Audience = 'men' | 'women';
 
 const categoriesByAudience = {
@@ -341,6 +343,31 @@ function Results({
   result: RecommendationResponse;
   elapsed: number;
 }) {
+  const [feedbackState, setFeedbackState] = useState<
+    Record<string, 'sending' | ShopperFeedback | 'error'>
+  >({});
+
+  async function sendFeedback(productId: string, feedback: ShopperFeedback) {
+    setFeedbackState((current) => ({ ...current, [productId]: 'sending' }));
+    try {
+      const response = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          recommendationId: result.recommendationId,
+          productId,
+          feedback,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error('Feedback was not accepted.');
+      }
+      setFeedbackState((current) => ({ ...current, [productId]: feedback }));
+    } catch {
+      setFeedbackState((current) => ({ ...current, [productId]: 'error' }));
+    }
+  }
+
   if (result.photoStatus === 'invalid') {
     return (
       <div className="message invalid-photo" role="status">
@@ -414,6 +441,49 @@ function Results({
                 <div className="fit-note">
                   <span>Fit note</span>
                   <p>{item.fitRisk ?? 'No material fit concern identified.'}</p>
+                </div>
+                <div className="feedback-block">
+                  <span>Was this useful?</span>
+                  {feedbackState[item.productId] === undefined ||
+                  feedbackState[item.productId] === 'error' ? (
+                    <div className="feedback-actions">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          void sendFeedback(item.productId, 'liked');
+                        }}
+                      >
+                        Good match
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          void sendFeedback(item.productId, 'disliked');
+                        }}
+                      >
+                        Not for me
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          void sendFeedback(item.productId, 'would-buy');
+                        }}
+                      >
+                        Would buy
+                      </button>
+                    </div>
+                  ) : feedbackState[item.productId] === 'sending' ? (
+                    <small>Saving…</small>
+                  ) : (
+                    <small className="feedback-thanks">
+                      Thanks — your feedback was saved.
+                    </small>
+                  )}
+                  {feedbackState[item.productId] === 'error' && (
+                    <small className="feedback-error">
+                      Could not save. Please try again.
+                    </small>
+                  )}
                 </div>
                 <a href={item.productUrl}>
                   View product <span>↗</span>

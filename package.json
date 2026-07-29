@@ -21,7 +21,8 @@
     "benchmark:recommendation": "tsx packages/ai/src/recommendation-cli.ts",
     "smoke:recommend-api": "tsx apps/api/src/smoke-cli.ts",
     "dev:web": "corepack pnpm --filter @suitly/web dev",
-    "build:web": "corepack pnpm --filter @suitly/web build"
+    "build:web": "corepack pnpm --filter @suitly/web build",
+    "report:evaluation": "tsx apps/api/src/evaluation-summary-cli.ts"
   },
   "devDependencies": {
     "@types/node": "22.10.5",

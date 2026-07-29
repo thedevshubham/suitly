@@ -115,6 +115,7 @@ const fields = {
 describe('recommendShopper', () => {
   it('analyses the private photo and returns profile-aware catalogue results', async () => {
     let temporaryPath = '';
+    const recordRecommendation = vi.fn().mockResolvedValue(undefined);
     const result = await recommendShopper(
       { fields, photo: await fixturePhoto() },
       {
@@ -125,6 +126,12 @@ describe('recommendShopper', () => {
           return Promise.resolve(validProfile);
         }),
         createRecommendationId: () => 'rec_test',
+        evaluation: {
+          recordRecommendation,
+          recommendationContainsProduct: vi.fn().mockResolvedValue(true),
+          recordFeedback: vi.fn().mockResolvedValue(undefined),
+          listEvents: vi.fn().mockResolvedValue([]),
+        },
       },
     );
 
@@ -139,6 +146,13 @@ describe('recommendShopper', () => {
     ]);
     expect(result.recommendations[0]?.source).toBe('deterministic');
     expect(existsSync(temporaryPath)).toBe(false);
+    expect(recordRecommendation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        recommendationId: 'rec_test',
+        productIds: ['straight'],
+        audience: 'men',
+      }),
+    );
   });
 
   it('returns actionable issues without products for an unusable photo', async () => {

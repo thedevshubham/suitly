@@ -99,6 +99,7 @@ connectors/
 - [Local shopper-photo benchmark](docs/shopper-photo-benchmark.md)
 - [Recommendation-engine benchmark](docs/recommendation-engine-benchmark.md)
 - [Virtual try-on feasibility](docs/virtual-try-on-feasibility.md)
+- [Recommendation feedback and evaluation](docs/recommendation-feedback.md)
 - [ADR: Local Ollama product intelligence](docs/decisions/0001-local-ollama-product-intelligence.md)
 - [ADR: Local-only AI MVP](docs/decisions/0002-local-only-ai-mvp.md)
 - [ADR: Deterministic recommendation default](docs/decisions/0003-deterministic-recommendation-default.md)
@@ -254,6 +255,14 @@ requests are substantially faster than cold model starts. The shopper chooses
 men's or women's styles explicitly; Suitly never infers this from the photo.
 Colour preference is temporarily omitted because the sample catalogue does not
 contain trustworthy variant colours.
+
+Each recommendation card supports Good match, Not for me, and Would buy
+feedback. Local evaluation events exclude photos and body inputs and are
+written to an ignored JSONL file. Summarize the collected signals with:
+
+```bash
+corepack pnpm report:evaluation
+```
 
 ## Privacy
 

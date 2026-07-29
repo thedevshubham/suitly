@@ -40,3 +40,6 @@ export type {
   AIRankedRecommendation,
   AIRecommendationResult,
 } from './recommendation.js';
+
+export { feedbackRequestSchema, shopperFeedbackSchema } from './feedback.js';
+export type { FeedbackRequest, ShopperFeedback } from './feedback.js';
