@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plain Storefront · Suitly Demo</title>
+  </head>
+  <body>
+    <main>
+      <h1>Example merchant storefront</h1>
+      <p>This page has no framework and embeds Suitly as a web component.</p>
+      <suitly-recommender
+        api-base-url="http://localhost:3000"
+        merchant-id="sample-merchant"
+      ></suitly-recommender>
+    </main>
+    <script type="module">
+      import { registerSuitlyWidget } from '../../packages/storefront-sdk/src/index.ts';
+      registerSuitlyWidget();
+    </script>
+  </body>
+</html>
