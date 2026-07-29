@@ -159,7 +159,7 @@ function deterministicResponse(
           styleConfidence: candidate.intelligence.confidence * 0.7,
           sizeConfidence: 0,
           reasons: [
-            'Matches the requested category and available colour.',
+            'Matches the requested category and catalogue audience.',
             'Ranked using validated catalogue attributes.',
           ],
           fitRisk: 'No size-chart evidence is available for confident sizing.',

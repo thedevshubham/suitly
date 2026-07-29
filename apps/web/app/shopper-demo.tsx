@@ -39,14 +39,22 @@ type ErrorResponse = {
   error?: { message?: string; issues?: { path: string; message: string }[] };
 };
 
-const categories = [
-  ['jacket', 'Jackets'],
-  ['t-shirt', 'T-shirts'],
-  ['shirt', 'Shirts'],
-  ['top', 'Tops'],
-  ['jumper', 'Jumpers'],
-  ['shoes', 'Shoes'],
-] as const;
+type Audience = 'men' | 'women';
+
+const categoriesByAudience = {
+  men: [
+    ['jacket', 'Jackets'],
+    ['shirt', 'Shirts'],
+    ['shoes', 'Shoes'],
+  ],
+  women: [
+    ['jacket', 'Jackets'],
+    ['top', 'Tops'],
+    ['t-shirt', 'T-shirts'],
+    ['jumper', 'Jumpers'],
+    ['bag', 'Bags'],
+  ],
+} as const;
 
 export function ShopperDemo() {
   const [photo, setPhoto] = useState<File>();
@@ -55,6 +63,8 @@ export function ShopperDemo() {
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [elapsed, setElapsed] = useState(0);
+  const [audience, setAudience] = useState<Audience>('men');
+  const [category, setCategory] = useState('jacket');
   const fileInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -150,7 +160,7 @@ export function ShopperDemo() {
         <span>01</span>
         <div>
           <h2 id="demo-heading">Build your style profile</h2>
-          <p>Four inputs. One private local analysis. No account needed.</p>
+          <p>A few inputs. One private local analysis. No account needed.</p>
         </div>
       </div>
 
@@ -234,16 +244,28 @@ export function ShopperDemo() {
               </label>
             </div>
             <label>
-              <span>Preferred colour</span>
-              <div className="colour-input">
-                <i />
-                <input name="preferredColours" defaultValue="Black" required />
-              </div>
+              <span>Show me</span>
+              <select
+                name="audience"
+                value={audience}
+                onChange={(event) => {
+                  const nextAudience = event.target.value as Audience;
+                  setAudience(nextAudience);
+                  setCategory(categoriesByAudience[nextAudience][0][0]);
+                }}
+              >
+                <option value="men">Men&apos;s styles</option>
+                <option value="women">Women&apos;s styles</option>
+              </select>
             </label>
             <label>
               <span>What are you shopping for?</span>
-              <select name="category" defaultValue="jacket">
-                {categories.map(([value, label]) => (
+              <select
+                name="category"
+                value={category}
+                onChange={(event) => setCategory(event.target.value)}
+              >
+                {categoriesByAudience[audience].map(([value, label]) => (
                   <option key={value} value={value}>
                     {label}
                   </option>
@@ -296,7 +318,7 @@ export function ShopperDemo() {
           </ol>
           <div className="sample-caveat">
             <strong>Sample catalogue</strong>
-            Product colours and sizes are limited in this development fixture.
+            Product options and sizes are limited in this development fixture.
           </div>
         </aside>
       </div>
@@ -367,7 +389,7 @@ function Results({
               <div className="product-info">
                 <div className="product-title-row">
                   <div>
-                    <p>{item.colour ?? 'Available colour'}</p>
+                    <p>Catalogue match</p>
                     <h3>{item.title}</h3>
                   </div>
                   <strong>

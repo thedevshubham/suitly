@@ -35,6 +35,7 @@ function enrichedProduct(
     colour?: string;
     available?: boolean;
     category?: ProductIntelligence['category'];
+    audience?: 'men' | 'women';
   } = {},
 ): EnrichedCatalogueProduct {
   return {
@@ -44,7 +45,7 @@ function enrichedProduct(
       source: 'shopify_csv',
       handle: id,
       title: `Product ${id}`,
-      tags: [],
+      tags: [overrides.audience ?? 'men'],
       published: true,
       status: 'active',
       images: [{ url: `https://example.com/${id}.jpg` }],
@@ -69,6 +70,7 @@ function enrichedProduct(
 
 const request: RecommendationRequest = {
   merchantId: 'merchant_test',
+  audience: 'men',
   heightCm: 178,
   weightKg: 75,
   preferredColours: ['Black'],
@@ -81,6 +83,7 @@ describe('buildScoredCandidates', () => {
       [
         enrichedProduct('eligible'),
         enrichedProduct('wrong_merchant', { merchantId: 'other' }),
+        enrichedProduct('wrong_audience', { audience: 'women' }),
         enrichedProduct('wrong_category', { category: 'shirt' }),
         enrichedProduct('wrong_colour', { colour: 'Blue' }),
         enrichedProduct('unavailable', { available: false }),
@@ -91,6 +94,16 @@ describe('buildScoredCandidates', () => {
     expect(candidates.map((candidate) => candidate.product.id)).toEqual([
       'eligible',
     ]);
+  });
+
+  it('allows recommendation without a colour preference', () => {
+    const candidates = buildScoredCandidates(
+      [enrichedProduct('colour-neutral', { colour: 'Blue' })],
+      { ...request, preferredColours: [] },
+    );
+
+    expect(candidates[0]?.product.id).toBe('colour-neutral');
+    expect(candidates[0]?.scoreComponents.colour).toBe(0.5);
   });
 
   it('sorts candidates deterministically and records components', () => {

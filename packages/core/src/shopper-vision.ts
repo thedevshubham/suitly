@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const shopperVisionInputSchema = z.object({
   heightCm: z.number().min(120).max(230),
   weightKg: z.number().min(35).max(250),
-  preferredColours: z.array(z.string().trim().min(1)).min(1).max(8),
+  preferredColours: z.array(z.string().trim().min(1)).max(8),
 });
 
 export const shopperVisualProfileSchema = z.object({

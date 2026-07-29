@@ -22,6 +22,7 @@ import type {
 
 const recommendShopperFieldsSchema = shopperVisionInputSchema.extend({
   merchantId: z.string().trim().min(1),
+  audience: z.enum(['men', 'women']),
   category: productIntelligenceSchema.shape.category,
   maximumPriceMinor: z.number().int().nonnegative().optional(),
   allowAlternativeColours: z.boolean().optional(),

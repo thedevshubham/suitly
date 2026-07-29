@@ -12,6 +12,7 @@ export type EnrichedCatalogueProduct = {
 
 export type RecommendationRequest = {
   merchantId: string;
+  audience: 'men' | 'women';
   heightCm: number;
   weightKg: number;
   preferredColours: string[];
@@ -20,6 +21,8 @@ export type RecommendationRequest = {
   maximumPriceMinor?: number | undefined;
   allowAlternativeColours?: boolean | undefined;
 };
+
+export type RecommendationAudience = RecommendationRequest['audience'];
 
 export type ScoreComponents = {
   colour: number;

@@ -10,9 +10,9 @@ if (existsSync('.env.local')) {
 
 const form = new FormData();
 form.set('merchantId', 'sample-merchant');
+form.set('audience', 'men');
 form.set('heightCm', '178');
 form.set('weightKg', '75');
-form.append('preferredColours', 'Black');
 form.set('category', 'jacket');
 form.set(
   'photo',

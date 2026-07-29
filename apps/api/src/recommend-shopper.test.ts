@@ -48,6 +48,7 @@ const intelligence: ProductIntelligence = {
 function enrichedProduct(
   id: string,
   silhouette: ProductIntelligence['silhouette'] = 'straight',
+  audience: 'men' | 'women' = 'men',
 ): EnrichedCatalogueProduct {
   return {
     product: canonicalProductSchema.parse({
@@ -56,7 +57,7 @@ function enrichedProduct(
       source: 'shopify_csv',
       handle: id,
       title: `Product ${id}`,
-      tags: [],
+      tags: [audience],
       published: true,
       status: 'active',
       images: [{ url: `https://example.com/${id}.jpg` }],
@@ -104,9 +105,10 @@ async function fixturePhoto(): Promise<Buffer> {
 
 const fields = {
   merchantId: 'merchant_test',
+  audience: 'men',
   heightCm: 178,
   weightKg: 75,
-  preferredColours: ['Black'],
+  preferredColours: [],
   category: 'jacket',
 };
 
@@ -180,6 +182,7 @@ describe('createRecommendHttpHandler', () => {
   it('accepts multipart input and returns a no-store JSON response', async () => {
     const form = new FormData();
     form.set('merchantId', 'merchant_test');
+    form.set('audience', 'men');
     form.set('heightCm', '178');
     form.set('weightKg', '75');
     form.append('preferredColours', 'Black');

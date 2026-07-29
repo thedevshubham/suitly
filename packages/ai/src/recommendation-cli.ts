@@ -39,6 +39,7 @@ const catalogue = storedEntrySchema
   .map((entry) => entry satisfies EnrichedCatalogueProduct);
 const request = {
   merchantId: catalogue[0]?.product.merchantId ?? 'merchant_sample',
+  audience: 'men',
   heightCm: 178,
   weightKg: 75,
   preferredColours: ['Black'],

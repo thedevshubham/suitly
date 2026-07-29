@@ -101,6 +101,7 @@ connectors/
 - [ADR: Local Ollama product intelligence](docs/decisions/0001-local-ollama-product-intelligence.md)
 - [ADR: Local-only AI MVP](docs/decisions/0002-local-only-ai-mvp.md)
 - [ADR: Deterministic recommendation default](docs/decisions/0003-deterministic-recommendation-default.md)
+- [ADR: Explicit catalogue audience](docs/decisions/0004-explicit-catalogue-audience.md)
 - [Original product specification](suitly.md)
 - [Engineering agent instructions](AGENTS.md)
 
@@ -247,7 +248,10 @@ corepack pnpm dev:web
 Then open `http://localhost:3000`. You can upload a compatible full-body photo
 or use the included synthetic fixture, enter shopper preferences, and view
 three catalogue-grounded recommendation cards. Ollama must be running; warm
-requests are substantially faster than cold model starts.
+requests are substantially faster than cold model starts. The shopper chooses
+men's or women's styles explicitly; Suitly never infers this from the photo.
+Colour preference is temporarily omitted because the sample catalogue does not
+contain trustworthy variant colours.
 
 ## Privacy
 

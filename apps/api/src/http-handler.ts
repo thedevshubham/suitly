@@ -83,6 +83,7 @@ export function createRecommendHttpHandler(
 function parseFields(form: FormData): unknown {
   return {
     merchantId: form.get('merchantId'),
+    audience: form.get('audience'),
     heightCm: toNumber(form.get('heightCm')),
     weightKg: toNumber(form.get('weightKg')),
     preferredColours: form

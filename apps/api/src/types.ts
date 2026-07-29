@@ -2,10 +2,12 @@ import type { ProductIntelligence, ShopperVisualProfile } from '@suitly/core';
 import type {
   EnrichedCatalogueProduct,
   HydratedRecommendation,
+  RecommendationAudience,
 } from '@suitly/recommendation';
 
 export type RecommendShopperFields = {
   merchantId: string;
+  audience: RecommendationAudience;
   heightCm: number;
   weightKg: number;
   preferredColours: string[];

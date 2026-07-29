@@ -47,6 +47,9 @@ function selectEligibleVariant(
     product.merchantId !== request.merchantId ||
     product.status !== 'active' ||
     !product.published ||
+    !product.tags.some(
+      (tag) => tag.toLowerCase() === request.audience.toLowerCase(),
+    ) ||
     product.images.length === 0 ||
     entry.intelligence.category !== request.category
   ) {
@@ -66,7 +69,11 @@ function selectEligibleVariant(
   );
 
   return (
-    preferred ?? (request.allowAlternativeColours ? available[0] : undefined)
+    preferred ??
+    (request.preferredColours.length === 0 ||
+    request.allowAlternativeColours === true
+      ? available[0]
+      : undefined)
   );
 }
 
@@ -75,11 +82,15 @@ function scoreCandidate(
   variant: CanonicalVariant,
   request: RecommendationRequest,
 ): ScoreComponents {
-  const colour = request.preferredColours.some(
-    (preferred) => preferred.toLowerCase() === variant.colour?.toLowerCase(),
-  )
-    ? 1
-    : 0;
+  const colour =
+    request.preferredColours.length === 0
+      ? 0.5
+      : request.preferredColours.some(
+            (preferred) =>
+              preferred.toLowerCase() === variant.colour?.toLowerCase(),
+          )
+        ? 1
+        : 0;
   const heightLength = scoreHeightLength(
     request.heightCm,
     entry.intelligence.length,
