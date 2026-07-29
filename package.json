@@ -22,7 +22,8 @@
     "smoke:recommend-api": "tsx apps/api/src/smoke-cli.ts",
     "dev:web": "corepack pnpm --filter @suitly/web dev",
     "build:web": "corepack pnpm --filter @suitly/web build",
-    "report:evaluation": "tsx apps/api/src/evaluation-summary-cli.ts"
+    "report:evaluation": "tsx apps/api/src/evaluation-summary-cli.ts",
+    "evaluate:controlled": "tsx apps/api/src/controlled-evaluation-cli.ts"
   },
   "devDependencies": {
     "@types/node": "22.10.5",

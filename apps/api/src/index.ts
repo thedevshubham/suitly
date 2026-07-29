@@ -1,4 +1,12 @@
 export { createRecommendHttpHandler } from './http-handler.js';
+export {
+  controlledEvaluationCaseSchema,
+  controlledEvaluationCasesSchema,
+  runControlledEvaluation,
+  type ControlledEvaluationCase,
+  type ControlledEvaluationCaseResult,
+  type ControlledEvaluationReport,
+} from './controlled-evaluation.js';
 export { createFeedbackHttpHandler } from './feedback-handler.js';
 export { JsonCatalogueRepository } from './json-catalogue-repository.js';
 export { JsonlEvaluationRepository } from './jsonl-evaluation-repository.js';

@@ -143,13 +143,14 @@ describe('recommendShopper', () => {
     });
     expect(result.recommendations.map((item) => item.productId)).toEqual([
       'straight',
+      'boxy',
     ]);
     expect(result.recommendations[0]?.source).toBe('deterministic');
     expect(existsSync(temporaryPath)).toBe(false);
     expect(recordRecommendation).toHaveBeenCalledWith(
       expect.objectContaining({
         recommendationId: 'rec_test',
-        productIds: ['straight'],
+        productIds: ['straight', 'boxy'],
         audience: 'men',
       }),
     );

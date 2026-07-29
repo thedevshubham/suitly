@@ -1,0 +1,182 @@
+[
+  {
+    "id": "men-jacket-short-balanced",
+    "audience": "men",
+    "category": "jacket",
+    "heightCm": 160,
+    "weightKg": 58,
+    "profilePreset": "balanced",
+    "minimumResults": 3
+  },
+  {
+    "id": "men-jacket-average-straight",
+    "audience": "men",
+    "category": "jacket",
+    "heightCm": 175,
+    "weightKg": 72,
+    "profilePreset": "straight",
+    "minimumResults": 3
+  },
+  {
+    "id": "men-jacket-tall-relaxed",
+    "audience": "men",
+    "category": "jacket",
+    "heightCm": 190,
+    "weightKg": 90,
+    "profilePreset": "relaxed",
+    "minimumResults": 2
+  },
+  {
+    "id": "men-jacket-average-relaxed",
+    "audience": "men",
+    "category": "jacket",
+    "heightCm": 180,
+    "weightKg": 82,
+    "profilePreset": "relaxed",
+    "minimumResults": 2
+  },
+  {
+    "id": "men-shirt-short-balanced",
+    "audience": "men",
+    "category": "shirt",
+    "heightCm": 163,
+    "weightKg": 60,
+    "profilePreset": "balanced",
+    "minimumResults": 2
+  },
+  {
+    "id": "men-shirt-average-straight",
+    "audience": "men",
+    "category": "shirt",
+    "heightCm": 176,
+    "weightKg": 74,
+    "profilePreset": "straight",
+    "minimumResults": 2
+  },
+  {
+    "id": "men-shirt-tall-relaxed",
+    "audience": "men",
+    "category": "shirt",
+    "heightCm": 192,
+    "weightKg": 95,
+    "profilePreset": "relaxed",
+    "minimumResults": 1
+  },
+  {
+    "id": "men-shoes-average-balanced",
+    "audience": "men",
+    "category": "shoes",
+    "heightCm": 178,
+    "weightKg": 75,
+    "profilePreset": "balanced",
+    "minimumResults": 1
+  },
+  {
+    "id": "men-shoes-tall-straight",
+    "audience": "men",
+    "category": "shoes",
+    "heightCm": 188,
+    "weightKg": 88,
+    "profilePreset": "straight",
+    "minimumResults": 1
+  },
+  {
+    "id": "women-jacket-short-balanced",
+    "audience": "women",
+    "category": "jacket",
+    "heightCm": 155,
+    "weightKg": 50,
+    "profilePreset": "balanced",
+    "minimumResults": 3
+  },
+  {
+    "id": "women-jacket-average-straight",
+    "audience": "women",
+    "category": "jacket",
+    "heightCm": 168,
+    "weightKg": 62,
+    "profilePreset": "straight",
+    "minimumResults": 3
+  },
+  {
+    "id": "women-jacket-tall-relaxed",
+    "audience": "women",
+    "category": "jacket",
+    "heightCm": 182,
+    "weightKg": 78,
+    "profilePreset": "relaxed",
+    "minimumResults": 2
+  },
+  {
+    "id": "women-top-short-balanced",
+    "audience": "women",
+    "category": "top",
+    "heightCm": 157,
+    "weightKg": 52,
+    "profilePreset": "balanced",
+    "minimumResults": 3
+  },
+  {
+    "id": "women-top-average-straight",
+    "audience": "women",
+    "category": "top",
+    "heightCm": 166,
+    "weightKg": 61,
+    "profilePreset": "straight",
+    "minimumResults": 3
+  },
+  {
+    "id": "women-top-tall-relaxed",
+    "audience": "women",
+    "category": "top",
+    "heightCm": 180,
+    "weightKg": 76,
+    "profilePreset": "relaxed",
+    "minimumResults": 2
+  },
+  {
+    "id": "women-tshirt-balanced",
+    "audience": "women",
+    "category": "t-shirt",
+    "heightCm": 165,
+    "weightKg": 58,
+    "profilePreset": "balanced",
+    "minimumResults": 1
+  },
+  {
+    "id": "women-tshirt-relaxed",
+    "audience": "women",
+    "category": "t-shirt",
+    "heightCm": 173,
+    "weightKg": 70,
+    "profilePreset": "relaxed",
+    "minimumResults": 1
+  },
+  {
+    "id": "women-jumper-balanced",
+    "audience": "women",
+    "category": "jumper",
+    "heightCm": 170,
+    "weightKg": 65,
+    "profilePreset": "balanced",
+    "minimumResults": 1
+  },
+  {
+    "id": "women-bag-straight",
+    "audience": "women",
+    "category": "bag",
+    "heightCm": 168,
+    "weightKg": 63,
+    "profilePreset": "straight",
+    "minimumResults": 1
+  },
+  {
+    "id": "women-bag-relaxed",
+    "audience": "women",
+    "category": "bag",
+    "heightCm": 178,
+    "weightKg": 80,
+    "profilePreset": "relaxed",
+    "minimumResults": 1
+  }
+]

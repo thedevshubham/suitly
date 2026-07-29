@@ -123,7 +123,7 @@ describe('buildScoredCandidates', () => {
     });
   });
 
-  it('uses the shopper profile to exclude poor silhouettes and boost matches', () => {
+  it('uses the shopper profile to penalize poor silhouettes and boost matches', () => {
     const boxy = enrichedProduct('boxy');
     boxy.intelligence = {
       ...boxy.intelligence,
@@ -154,8 +154,10 @@ describe('buildScoredCandidates', () => {
 
     expect(candidates.map((candidate) => candidate.product.id)).toEqual([
       'relaxed',
+      'boxy',
     ]);
     expect(candidates[0]?.scoreComponents.silhouetteCompatibility).toBe(1);
+    expect(candidates[1]?.scoreComponents.silhouetteCompatibility).toBe(0);
   });
 });
 

@@ -14,10 +14,7 @@ export function buildScoredCandidates(
   return enrichedProducts
     .flatMap((entry) => {
       const variant = selectEligibleVariant(entry, request);
-      if (
-        variant === undefined ||
-        isLessSuitable(entry, request.shopperProfile?.lessSuitableSilhouettes)
-      ) {
+      if (variant === undefined) {
         return [];
       }
 
@@ -107,19 +104,6 @@ function scoreCandidate(
   };
 }
 
-function isLessSuitable(
-  entry: EnrichedCatalogueProduct,
-  lessSuitableSilhouettes: string[] | undefined,
-): boolean {
-  const lessSuitable = new Set(
-    (lessSuitableSilhouettes ?? []).map((value) => value.toLowerCase()),
-  );
-  return (
-    lessSuitable.has(entry.intelligence.fit.toLowerCase()) ||
-    lessSuitable.has(entry.intelligence.silhouette.toLowerCase())
-  );
-}
-
 function scoreSilhouetteCompatibility(
   entry: EnrichedCatalogueProduct,
   request: RecommendationRequest,
@@ -129,6 +113,17 @@ function scoreSilhouetteCompatibility(
       value.toLowerCase(),
     ),
   );
+  const lessSuitable = new Set(
+    (request.shopperProfile?.lessSuitableSilhouettes ?? []).map((value) =>
+      value.toLowerCase(),
+    ),
+  );
+  if (
+    lessSuitable.has(entry.intelligence.fit.toLowerCase()) ||
+    lessSuitable.has(entry.intelligence.silhouette.toLowerCase())
+  ) {
+    return 0;
+  }
   if (recommended.size === 0) {
     return 0.5;
   }
