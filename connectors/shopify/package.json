@@ -1,0 +1,13 @@
+{
+  "name": "@suitly/connector-shopify",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@suitly/connector-sdk": "workspace:*",
+    "@suitly/core": "workspace:*",
+    "zod": "3.25.76"
+  }
+}

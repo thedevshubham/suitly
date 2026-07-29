@@ -23,12 +23,14 @@
     "dev:web": "corepack pnpm --filter @suitly/web dev",
     "build:web": "corepack pnpm --filter @suitly/web build",
     "report:evaluation": "tsx apps/api/src/evaluation-summary-cli.ts",
-    "evaluate:controlled": "tsx apps/api/src/controlled-evaluation-cli.ts"
+    "evaluate:controlled": "tsx apps/api/src/controlled-evaluation-cli.ts",
+    "build:storefront-sdk": "esbuild packages/storefront-sdk/src/auto-register.ts --bundle --format=esm --minify --outfile=packages/storefront-sdk/dist/suitly-widget.js && esbuild packages/storefront-sdk/src/auto-register.ts --bundle --format=iife --minify --outfile=connectors/shopify/extensions/suitly-recommender/assets/suitly-widget.js"
   },
   "devDependencies": {
     "@types/node": "22.10.5",
     "@typescript-eslint/eslint-plugin": "8.19.1",
     "@typescript-eslint/parser": "8.19.1",
+    "esbuild": "0.28.1",
     "eslint": "8.57.1",
     "eslint-config-prettier": "9.1.0",
     "prettier": "3.4.2",

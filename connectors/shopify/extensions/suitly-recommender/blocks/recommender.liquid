@@ -1,0 +1,20 @@
+<div
+  data-suitly-recommender
+  data-merchant-id="{{ shop.permanent_domain | escape }}"
+  data-api-base-url="{{ block.settings.api_base_url | escape }}"
+></div>
+{{ 'suitly-widget.js' | asset_url | script_tag }}
+
+{% schema %}
+{
+  "name": "Suitly recommender",
+  "target": "section",
+  "settings": [
+    {
+      "type": "url",
+      "id": "api_base_url",
+      "label": "Suitly API URL"
+    }
+  ]
+}
+{% endschema %}

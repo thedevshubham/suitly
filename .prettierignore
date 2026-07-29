@@ -1,6 +1,7 @@
 node_modules/
 coverage/
 dist/
+connectors/shopify/extensions/suitly-recommender/assets/suitly-widget.js
 .next/
 data/generated/
 tests/fixtures/*.csv

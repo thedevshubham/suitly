@@ -19,3 +19,9 @@ The included `examples/storefront-demo/index.html` proves the boundary from a
 plain HTML page. A production build should publish the compiled browser module
 to a CDN and issue a short-lived session token; merchant secrets never belong
 in widget markup.
+
+Build the browser and Shopify assets with:
+
+```bash
+corepack pnpm build:storefront-sdk
+```

@@ -1,0 +1,11 @@
+{
+  "name": "@suitly/connector-sdk",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@suitly/core": "workspace:*"
+  }
+}
