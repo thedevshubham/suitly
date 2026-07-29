@@ -101,6 +101,7 @@ connectors/
 - [Virtual try-on feasibility](docs/virtual-try-on-feasibility.md)
 - [Recommendation feedback and evaluation](docs/recommendation-feedback.md)
 - [Universal storefront SDK](docs/storefront-sdk.md)
+- [Production foundations](docs/production-foundations.md)
 - [Controlled recommendation evaluation](docs/controlled-recommendation-evaluation.md)
 - [ADR: Local Ollama product intelligence](docs/decisions/0001-local-ollama-product-intelligence.md)
 - [ADR: Local-only AI MVP](docs/decisions/0002-local-only-ai-mvp.md)

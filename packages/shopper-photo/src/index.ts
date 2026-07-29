@@ -8,3 +8,8 @@ export type {
   PrepareShopperPhotoOptions,
   TemporaryShopperPhoto,
 } from './types.js';
+export {
+  withPrivateTemporaryObject,
+  type PrivateTemporaryObjectStorage,
+  type TemporaryObject,
+} from './private-object-storage.js';

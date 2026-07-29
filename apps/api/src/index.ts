@@ -40,3 +40,10 @@ export type {
   FeedbackEvaluationEvent,
   RecommendationEvaluationEvent,
 } from './evaluation-types.js';
+export {
+  createStorefrontToken,
+  FixedWindowRateLimiter,
+  secureStorefrontHandler,
+  verifyStorefrontToken,
+  type StorefrontClaims,
+} from './storefront-security.js';
