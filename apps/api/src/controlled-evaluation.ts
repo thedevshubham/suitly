@@ -44,9 +44,13 @@ export type ControlledEvaluationCaseResult = {
   id: string;
   passed: boolean;
   failures: string[];
+  catalogueOnlyProductIds: string[];
   baselineProductIds: string[];
   profileProductIds: string[];
+  statedInputChangedRanking: boolean;
   rankingChanged: boolean;
+  photographChangedRanking: boolean;
+  topThreePhotoLiftCandidates: string[];
 };
 
 export type ControlledEvaluationReport = {
@@ -54,6 +58,8 @@ export type ControlledEvaluationReport = {
   passedCount: number;
   failedCount: number;
   rankingChangedCount: number;
+  statedInputChangedRankingCount: number;
+  photographChangedRankingCount: number;
   failurePatterns: Record<string, number>;
   cases: ControlledEvaluationCaseResult[];
 };
@@ -80,6 +86,12 @@ export function runControlledEvaluation(
     failedCount: results.filter((result) => !result.passed).length,
     rankingChangedCount: results.filter((result) => result.rankingChanged)
       .length,
+    statedInputChangedRankingCount: results.filter(
+      (result) => result.statedInputChangedRanking,
+    ).length,
+    photographChangedRankingCount: results.filter(
+      (result) => result.photographChangedRanking,
+    ).length,
     failurePatterns,
     cases: results,
   };
@@ -98,23 +110,39 @@ function runCase(
     weightKg: testCase.weightKg,
     preferredColours: [],
   };
+  const catalogueOnly = buildScoredCandidates(catalogue, {
+    ...commonRequest,
+    heightCm: 175,
+    weightKg: 75,
+  }).slice(0, 3);
   const baseline = buildScoredCandidates(catalogue, commonRequest).slice(0, 3);
   const withProfile = buildScoredCandidates(catalogue, {
     ...commonRequest,
     shopperProfile: profileFor(testCase.profilePreset),
   }).slice(0, 3);
   const failures = validateCandidates(withProfile, testCase, merchantId);
+  const catalogueOnlyProductIds = catalogueOnly.map((item) => item.product.id);
   const baselineProductIds = baseline.map((item) => item.product.id);
   const profileProductIds = withProfile.map((item) => item.product.id);
+  const statedInputChangedRanking =
+    JSON.stringify(catalogueOnlyProductIds) !==
+    JSON.stringify(baselineProductIds);
+  const photographChangedRanking =
+    JSON.stringify(baselineProductIds) !== JSON.stringify(profileProductIds);
 
   return {
     id: testCase.id,
     passed: failures.length === 0,
     failures,
+    catalogueOnlyProductIds,
     baselineProductIds,
     profileProductIds,
-    rankingChanged:
-      JSON.stringify(baselineProductIds) !== JSON.stringify(profileProductIds),
+    statedInputChangedRanking,
+    rankingChanged: photographChangedRanking,
+    photographChangedRanking,
+    topThreePhotoLiftCandidates: profileProductIds.filter(
+      (productId) => !baselineProductIds.includes(productId),
+    ),
   };
 }
 

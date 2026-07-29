@@ -22,8 +22,11 @@ Every case checks that:
 - every selected variant is available; and
 - every selected variant belongs to its hydrated product.
 
-The runner also compares deterministic catalogue ranking with and without the
-synthetic shopper profile and records whether the top-three order changes.
+The runner records three comparable rankings: catalogue-only with neutral
+measurements, stated inputs using the case height and weight, and
+photograph-assisted using the structured shopper profile. It records whether
+each stage changes the top-three order and which products the photo profile
+introduces.
 
 ## First run
 
@@ -55,6 +58,8 @@ It does not show that those changes are preferable to shoppers. Categories
 with one or two eligible products cannot demonstrate meaningful
 personalization. Real shopper feedback and a broader, cleaner catalogue remain
 necessary before changing scoring weights or claiming recommendation quality.
+The generated `topThreePhotoLiftCandidates` are intended for blinded human
+review; ranking movement alone is not treated as proof of improvement.
 
 ## Running the evaluation
 
