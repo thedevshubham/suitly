@@ -98,10 +98,12 @@ connectors/
 - [Ollama product-intelligence evaluation](docs/ollama-product-intelligence-evaluation.md)
 - [Local shopper-photo benchmark](docs/shopper-photo-benchmark.md)
 - [Recommendation-engine benchmark](docs/recommendation-engine-benchmark.md)
+- [Virtual try-on feasibility](docs/virtual-try-on-feasibility.md)
 - [ADR: Local Ollama product intelligence](docs/decisions/0001-local-ollama-product-intelligence.md)
 - [ADR: Local-only AI MVP](docs/decisions/0002-local-only-ai-mvp.md)
 - [ADR: Deterministic recommendation default](docs/decisions/0003-deterministic-recommendation-default.md)
 - [ADR: Explicit catalogue audience](docs/decisions/0004-explicit-catalogue-audience.md)
+- [ADR: Defer local virtual try-on](docs/decisions/0005-defer-local-virtual-try-on.md)
 - [Original product specification](suitly.md)
 - [Engineering agent instructions](AGENTS.md)
 
